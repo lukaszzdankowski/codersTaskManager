@@ -25,6 +25,9 @@ public class TaskManager {
             String input = scanner.nextLine();
             switch (input) {
                 case "exit":
+                    saveTabToFile(FILE_NAME, tasks);
+                    System.out.println(ConsoleColors.RED + "Bye, bye.");
+                    System.exit(0);
                     break;
                 case "add":
                     addTask();
@@ -126,5 +129,21 @@ public class TaskManager {
         }
         return false;
     }
+
+    public static void saveTabToFile(String fileName, String[][] tab) {
+        Path dir = Paths.get(fileName);
+
+        String[] lines = new String[tasks.length];
+        for (int i = 0; i < tab.length; i++) {
+            lines[i] = String.join(",", tab[i]);
+        }
+
+        try {
+            Files.write(dir, Arrays.asList(lines));
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
 }
