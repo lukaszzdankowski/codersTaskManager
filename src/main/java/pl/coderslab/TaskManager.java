@@ -1,5 +1,8 @@
 package pl.coderslab;
 
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,6 +30,8 @@ public class TaskManager {
                     addTask();
                     break;
                 case "remove":
+                    removeTask(tasks, getTheNumber());
+                    System.out.println("Value was successfully deleted.");
                     break;
                 case "list":
                     printTab(tasks);
@@ -92,6 +97,34 @@ public class TaskManager {
         tasks[tasks.length - 1][0] = description;
         tasks[tasks.length - 1][1] = dueDate;
         tasks[tasks.length - 1][2] = isImportant;
+    }
+
+    private static void removeTask(String[][] tab, int index) {
+        try {
+            if (index < tab.length) {
+                tasks = ArrayUtils.remove(tab, index);
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.out.println("Element not exist in tab");
+        }
+    }
+
+    public static int getTheNumber() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Please select number to remove.");
+        String n = scanner.nextLine();
+        while (!isNumberGreaterEqualZero(n)) {
+            System.out.println("Incorrect argument passed. Please give number greater or equal 0");
+            n = scanner.nextLine();
+        }
+        return Integer.parseInt(n);
+    }
+
+    public static boolean isNumberGreaterEqualZero(String input) {
+        if (NumberUtils.isParsable(input)) {
+            return Integer.parseInt(input) >= 0;
+        }
+        return false;
     }
 
 }
